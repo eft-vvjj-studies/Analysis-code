@@ -1,0 +1,113 @@
+{
+  "plots": [
+
+     {
+      "plot_name": "Plot",
+      "names" : [ "DPhijj"],
+      "title_x": ["|#phi_{jj}|"],
+      "title_y": ["Events", "Events", "Events", "Events", "Events", "Events", "Events", "Events",  "Events", "Events"],
+      "samples" : ["WlljjQCD2jnomatch","WlljjEW4F", "tZq3l", "ssWWjjQCD", "ssWWjjEWTTWWcmf", "ssWWjjEWLTWWcmf", "ssWWjjEWLLWWcmf"],
+      "cuts" : ["nofilter","METCut"],
+      "regions" : ["all"],
+      "label" : {
+        "x": 0.25,
+        "y" : 1255e3,
+        "text": "pp at 100 TeV, 30 ab^{-1} (FCC-hh Delphes)"
+      },
+      "functions" : [
+        {
+          "name" : "SetLineWidth",
+          "params" : [1]
+        }
+      ],
+      "legend" : {
+        "location" : [0.15, 0.55, 0.55, 0.85],
+        "draw" : "L",
+        "entries": "f",
+        "functions" : [
+          {
+            "name" : "SetBorderSize",
+            "params" : [0]
+          }
+        ]
+      },
+      "draw" : "HIST"
+    },
+     {
+      "plot_name": "PlotFull",
+      "names" : [ "DEtall"],
+      "title_x": ["DEtall"],
+      "title_y": ["Events", "Events", "Events", "Events", "Events", "Events", "Events", "Events",  "Events", "Events"],
+      "samples" : ["WlljjQCD2jnomatch","WlljjEW4F", "tZq3l", "ssWWjjQCD", "ssWWjjEWTTWWcmf", "ssWWjjEWLTWWcmf", "ssWWjjEWLLWWcmf"],
+      "cuts" : ["nofilter","METCut"],
+      "regions" : ["all"],
+      "label" : {
+        "x": 500,
+        "y" : 1200e3,
+        "text": "#splitline{pp @ #sqrt{s} = 100 TeV, 30 ab^{-1}}{FCC-hh Delphes}"
+      },
+      "functions" : [
+        {
+          "name" : "SetLineWidth",
+          "params" : [1]
+        }
+      ],
+      "legend" : {
+        "location" : [0.15, 0.55, 0.45, 0.85],
+        "draw" : "L",
+        "entries": "f",
+        "functions" : [
+          {
+            "name" : "SetBorderSize",
+            "params" : [0]
+          }
+        ]
+      },
+      "draw" : "HIST"
+    },
+    {
+     "plot_name": "PlotSignal",
+      "names" : [ "Mjj"],
+      "title_x": ["m_{jj}"],
+      "title_y": ["Events", "Events", "Events", "Events", "Events", "Events", "Events", "Events",  "Events", "Events"],
+      "samples" : ["ssWWjjEWTTWWcmf", "ssWWjjEWLTWWcmf", "ssWWjjEWLLWWcmf"],
+      "cuts" : ["nofilter", "METCut"],
+      "regions" : ["all"],
+      "label" : {
+        "x": 0.75,
+        "y" : 90e3,
+        "text": "#splitline{pp @ #sqrt{s} = 100 TeV, 30 ab^{-1}}{FCC-hh Delphes}"
+      },
+      "functions" : [
+        {
+          "name" : "SetLineWidth",
+          "params" : [1]
+        }
+      ],
+      "legend" : {
+        "location" : [0.15, 0.65, 0.45, 0.85],
+        "draw" : "L",
+        "entries": "f",
+        "functions" : [
+          {
+            "name" : "SetBorderSize",
+            "params" : [0]
+          }
+        ]
+      },
+      "draw" : "HIST"
+    }
+  ],
+  "colors": {
+    "ssWWjjEWLLWWcmf" : [6, "ssWW EW - LL"],
+    "ssWWjjEWLTWWcmf" : [66, "ssWW EW - LT"],
+    "ssWWjjEWTTWWcmf" : [60, "ssWW EW - TT"],
+    "ssWWjjEWWWcmf" : [50, "ssWW EW"],
+    "ssWWjjQCD" : [41, "ssWW QCD"],
+    "wZEW" : [93, "WZ"],
+    "WlljjQCD2jnomatch": [99, "WZ QCD"],
+    "WlljjEW4F": [95, "WZ EW"],
+    "tZq3l": [89, "tZQ"]
+  },
+  "files" : ["/home/luka/DelphesAnalysis/ana/output.root"]
+}
