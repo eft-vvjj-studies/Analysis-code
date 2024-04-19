@@ -138,51 +138,57 @@ double ComputeDRjj(
 ROOT.gInterpreter.Declare(ComputeDRjj_code)
 
 #This Code should return the reconcstructed W or Z mass aswell as any other parameters if needed 
-#int type, 0 = return W , 1 = return Z 
-#int output, 0 = Mass
+#int type, 0 = return W 4 vec, 1 = return Z 4 vec
 ComputeWZMass_code = '''
-float ComputeWZMass(int type, int output,int nleptons, int nelectrons , int nmuons, ROOT::VecOps::RVec<float> L_pt, 
+TLorentzVector ComputeWZMass(int type,int nleptons, int nelectrons , int nmuons, ROOT::VecOps::RVec<float> L_pt, 
 ROOT::VecOps::RVec<float> L_eta, ROOT::VecOps::RVec<float> L_phi, ROOT::VecOps::RVec<float> L_m 
 ){
-  int result_type = pow(2,type) * pow(3,output);
+  int result_type = pow(2,type);
   if(nleptons == 3){
     // Same flavor leptons
     if(abs(nelectrons - nmuons) == 3){
-      return std::numeric_limits<double>::min();
+      TLorentzVector v1;
+      return v1;
     }
     //Different flavor leptons
     else if (abs(nelectrons - nmuons) == 1){
       if(nelectrons > nmuons){
         switch(result_type){
-          case 1:
-            return 1;
-            break;
-          case 2:
+          case 1: {
+            TLorentzVector v1(1., 1., 1.,1.);
+            return v1;
+            break; 
+          }
+          case 2:{
             auto electron_idx = ElementSel(L_m, 0.000511);
             TLorentzVector p[2];
             for(int i : {0, 1}) p[i].SetPtEtaPhiM(L_pt[electron_idx[i]],L_eta[electron_idx[i]],L_phi[electron_idx[i]],L_m[electron_idx[i]]);
-            return (p[0]+p[1]).M();
+            return (p[0]+p[1]);
             break;
+          }
         }
       }
       else if (nmuons > nelectrons){
         switch(result_type){
-          case 1:
-            return 1;
+          case 1:{
+            TLorentzVector v1(1., 1., 1.,1.);
+            return v1;
             break;
-          case 2:
+          }
+          case 2:{
             auto muon_idx = ElementSel(L_m, 0.10566);
             TLorentzVector p[2];
             for(int i : {0, 1}) p[i].SetPtEtaPhiM(L_pt[muon_idx[i]],L_eta[muon_idx[i]],L_phi[muon_idx[i]],L_m[muon_idx[i]]);
-            return (p[0]+p[1]).M();
+            return (p[0]+p[1]);
             break;
+          }
         }
       }
     }
   }
-  
   else {
-    return std::numeric_limits<double>::min();
+    TLorentzVector v1;
+    return v1;
   }
 }
 '''
@@ -306,9 +312,9 @@ definitions = [
   ("dRj1l1", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 0, 0)"),
   ("dRj2l2", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 1, 1)"),
   ("dRjj", "ComputeDRjj(jetPhi[goodJets], jetEta[goodJets])"),
-  ("Wmass", "ComputeWZMass(0, 0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
+  ("Wmass", "ComputeWZMass(0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
           " leptonPhi[goodLeptons], leptonMass[goodLeptons])"),
-  ("Zmass", "ComputeWZMass(1, 0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
+  ("Zmass", "ComputeWZMass(1, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
           " leptonPhi[goodLeptons], leptonMass[goodLeptons])")
 
 ]
