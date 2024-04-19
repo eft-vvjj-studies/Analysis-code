@@ -11,6 +11,23 @@ ROOT.TH1.SetDefaultSumw2()
 # Defining custom function to use in PyROOT
 # Todo: add to arrays (see below)
 
+#Ideally this should return the indices that are the specific value.
+ElementSel_code = '''
+ROOT::VecOps::RVec<int> ElementSel(ROOT::VecOps::RVec<float> v, float value)
+{
+ROOT::VecOps::RVec<int> r;
+const auto size = v.size();
+r.reserve(size);
+for(int i=0; i<size; i++) {
+      if(v[i] == value) {
+         r.emplace_back(i);
+      }
+   }
+   return r;
+}
+'''
+ROOT.gInterpreter.Declare(ElementSel_code)
+
 LeptonMass_code = '''
 ROOT::VecOps::RVec<float> LeptonMass(ROOT::VecOps::RVec<float> e_pt, ROOT::VecOps::RVec<float> m_pt,
  ROOT::VecOps::RVec<float> l_pt)
@@ -120,27 +137,46 @@ double ComputeDRjj(
 '''
 ROOT.gInterpreter.Declare(ComputeDRjj_code)
 
-#This Code should Return the reconcstructed W or Z mass aswell as any other parameters if needed 
+#This Code should return the reconcstructed W or Z mass aswell as any other parameters if needed 
+#int type, 0 = return W , 1 = return Z 
+#int output, 0 = Mass
 ComputeWZMass_code = '''
-double ComputeWZMass(int type, int nleptons, int nelectrons , int nmuons 
+float ComputeWZMass(int type, int output,int nleptons, int nelectrons , int nmuons, ROOT::VecOps::RVec<float> L_pt, 
+ROOT::VecOps::RVec<float> L_eta, ROOT::VecOps::RVec<float> L_phi, ROOT::VecOps::RVec<float> L_m 
 ){
-  int result_type = pow(2,type);
+  int result_type = pow(2,type) * pow(3,output);
   if(nleptons == 3){
     // Same flavor leptons
     if(abs(nelectrons - nmuons) == 3){
-      return 1;
+      return std::numeric_limits<double>::min();
     }
     //Different flavor leptons
     else if (abs(nelectrons - nmuons) == 1){
       if(nelectrons > nmuons){
         switch(result_type){
           case 1:
+            return 1;
             break;
           case 2:
+            auto electron_idx = ElementSel(L_m, 0.000511);
+            TLorentzVector p[2];
+            for(int i : {0, 1}) p[i].SetPtEtaPhiM(L_pt[electron_idx[i]],L_eta[electron_idx[i]],L_phi[electron_idx[i]],L_m[electron_idx[i]]);
+            return (p[0]+p[1]).M();
             break;
         }
       }
       else if (nmuons > nelectrons){
+        switch(result_type){
+          case 1:
+            return 1;
+            break;
+          case 2:
+            auto muon_idx = ElementSel(L_m, 0.10566);
+            TLorentzVector p[2];
+            for(int i : {0, 1}) p[i].SetPtEtaPhiM(L_pt[muon_idx[i]],L_eta[muon_idx[i]],L_phi[muon_idx[i]],L_m[muon_idx[i]]);
+            return (p[0]+p[1]).M();
+            break;
+        }
       }
     }
   }
@@ -165,7 +201,8 @@ samples = [
 ##  ("WlljjEW4F", "Samples/PROC_100TeV_Wlljj_EW_4F/*root", "Delphes"),
  ## ("WlljjQCD2jnomatch", "Samples/PROC_100TeV_Wlljj_QCD_2j_nomatch/*root", "Delphes"),
 #("ssWWSM","Samples/ssWW_SM/events.root","Delphes"),
-("WZQuad","Samples/WZ_Quad/events.root","Delphes")
+("WZQuad","Samples/sigWZ/WZquad/T2/events_WZquad.root","Delphes"),
+
 ]
 # Units: pb
 cross_section = {
@@ -269,7 +306,10 @@ definitions = [
   ("dRj1l1", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 0, 0)"),
   ("dRj2l2", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 1, 1)"),
   ("dRjj", "ComputeDRjj(jetPhi[goodJets], jetEta[goodJets])"),
-  ("Wmass", "ComputeWZMass(0,nLeptons,Sum(goodElectrons), Sum(goodMuons))")
+  ("Wmass", "ComputeWZMass(0, 0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
+          " leptonPhi[goodLeptons], leptonMass[goodLeptons])"),
+  ("Zmass", "ComputeWZMass(1, 0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
+          " leptonPhi[goodLeptons], leptonMass[goodLeptons])")
 
 ]
 #("dPhij1l1", "jetPhi[goodJets].size() >= 2 ? leptonPhi[goodLeptons].size() >= 2 ? jetPhi[goodJets][0] - leptonPhi[goodLeptons][0]"),
