@@ -8,4 +8,5 @@
 - Only the Z and W 4 vectors is returned in the WZMass function, for different W and Z having different flavor leptons. 
 - The result of WZmass is stored as a Rdataframe definition, so can be used as a filtered value when creating histograms, but because they are 4 vectors we will have to get the value such as for invariant mass "zmass.M()"
 - Still working on returning for W and Z having same flavor leptons.
-- This is my first README so any comments are welcome. 
+- This is my first README so any comments are welcome.
+- Might want to change all the Rvec floats to doubles to accommodate larger variables.

@@ -141,8 +141,7 @@ ROOT.gInterpreter.Declare(ComputeDRjj_code)
 #int type, 0 = return W 4 vec, 1 = return Z 4 vec
 ComputeWZMass_code = '''
 TLorentzVector ComputeWZMass(int type,int nleptons, int nelectrons , int nmuons, ROOT::VecOps::RVec<float> L_pt, 
-ROOT::VecOps::RVec<float> L_eta, ROOT::VecOps::RVec<float> L_phi, ROOT::VecOps::RVec<float> L_m, float Met_met, 
-float Met_eta, float Met_phi
+ROOT::VecOps::RVec<float> L_eta, ROOT::VecOps::RVec<float> L_phi, ROOT::VecOps::RVec<float> L_m, double Met_met, double Met_phi
 ){
   int result_type = pow(2,type);
   if(nleptons == 3){
@@ -160,7 +159,7 @@ float Met_eta, float Met_phi
             TLorentzVector m;
             auto muon_idx = ElementSel(L_m,0.10566);
             p.SetPtEtaPhiM(L_pt[muon_idx[0]],L_eta[muon_idx[0]],L_phi[muon_idx[0]],L_m[muon_idx[0]]);
-            m.SetPtEtaPhiM(Met_met, Met_eta, Met_phi, 0.0);
+            m.SetPtEtaPhiM(Met_met, 0.0, Met_phi, 0.0);
             return(p + m);
             break; 
           }
@@ -180,7 +179,7 @@ float Met_eta, float Met_phi
             TLorentzVector m;
             auto electron_idx = ElementSel(L_m,0.000511);
             p.SetPtEtaPhiM(L_pt[electron_idx[0]],L_eta[electron_idx[0]],L_phi[electron_idx[0]],L_m[electron_idx[0]]);
-            m.SetPtEtaPhiM(Met_met, Met_eta, Met_phi, 0.0);
+            m.SetPtEtaPhiM(Met_met, 0.0, Met_phi, 0.0);
             return(p + m);
             break;
           }
@@ -322,9 +321,9 @@ definitions = [
   ("dRj2l2", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 1, 1)"),
   ("dRjj", "ComputeDRjj(jetPhi[goodJets], jetEta[goodJets])"),
   ("Wmass", "ComputeWZMass(0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
-          " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Eta[0],MissingET.Phi[0])"),
+          " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
   ("Zmass", "ComputeWZMass(1, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
-          " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Eta[0],MissingET.Phi[0])")
+          " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])")
 
 ]
 #("dPhij1l1", "jetPhi[goodJets].size() >= 2 ? leptonPhi[goodLeptons].size() >= 2 ? jetPhi[goodJets][0] - leptonPhi[goodLeptons][0]"),
