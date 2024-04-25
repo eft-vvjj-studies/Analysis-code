@@ -53,13 +53,21 @@ ROOT.gInterpreter.Declare(LeptonMass_code)
 
 
 ComputeInvariantMass_code = '''
-double ComputeInvariantMass(ROOT::VecOps::RVec<float> pt, ROOT::VecOps::RVec<float> eta, ROOT::VecOps::RVec<float> phi,
+ROOT::VecOps::RVec<double> ComputeInvariantMass(ROOT::VecOps::RVec<float> pt, ROOT::VecOps::RVec<float> eta, ROOT::VecOps::RVec<float> phi,
  ROOT::VecOps::RVec<float> m)
 {
-  if(2 > pt.size()) return std::numeric_limits<double>::min();
+  if(2 > pt.size()) return ROOT::VecOps::RVec<double> (std::numeric_limits<double>::min());
+
   TLorentzVector p[2];
-  for(int i : {0, 1}) p[i].SetPtEtaPhiM(pt[i], eta[i], phi[i], m[i]);
-  return (p[0]+p[1]).M();
+  for(int i ; i < pt.size(); i++) p[i].SetPtEtaPhiM(pt[i], eta[i], phi[i], m[i]);
+  ROOT::VecOps::RVec<double> r;
+  auto v_1 = ROOT::VecOps::Combinations (pt, 2);
+  const auto size = v_1[0].size();
+  r.reserve(size);
+   for(int i=0; i<size; i++) {
+      r.emplace_back((p[v_1[0][i]] + p[v_1[1][i]]).M());
+    }
+  return r;
 }
 '''
 
@@ -67,14 +75,14 @@ ROOT.gInterpreter.Declare(ComputeInvariantMass_code)
 
 
 ComputeInvariantMassLeptons_code = '''
-double ComputeInvariantMassLeptons(
+ROOT::VecOps::RVec<double> ComputeInvariantMassLeptons(
   ROOT::VecOps::RVec<float> l_pt, ROOT::VecOps::RVec<float> l_eta, ROOT::VecOps::RVec<float> l_phi,
   ROOT::VecOps::RVec<float> l_m
 ) {
   if(2 <= l_pt.size()) {
     return ComputeInvariantMass(l_pt, l_eta, l_phi, l_m);
   } else {
-    return std::numeric_limits<double>::min();
+    return ROOT::VecOps::RVec<double> (std::numeric_limits<double>::min());
   }
 }
 '''
@@ -320,10 +328,12 @@ definitions = [
   ("dRj1l1", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 0, 0)"),
   ("dRj2l2", "ComputeDRjl(jetPhi[goodJets], jetEta[goodJets], leptonPhi[goodLeptons], leptonEta[goodLeptons], 1, 1)"),
   ("dRjj", "ComputeDRjj(jetPhi[goodJets], jetEta[goodJets])"),
-  ("Wmass", "ComputeWZMass(0, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
+  ("W4vec", "ComputeWZMass(0,nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
           " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
-  ("Zmass", "ComputeWZMass(1, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
-          " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])")
+  ("Z4vec", "ComputeWZMass(1, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
+          " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
+  ("WZmass", "ROOT::VecOps::RVec<float> (W4vec.M(),Z4vec.M())")        
+  
 
 ]
 #("dPhij1l1", "jetPhi[goodJets].size() >= 2 ? leptonPhi[goodLeptons].size() >= 2 ? jetPhi[goodJets][0] - leptonPhi[goodLeptons][0]"),
@@ -332,11 +342,10 @@ definitions = [
 #I'm pretty sure filters are applied sequentially so make sure that you don't have two mutually exclusive filters -WS
 filters = [
   ("nLeptons == 3", "LeptonCut"),
-  #("Wmass == 1", "CodeCheck"), #From me checking that the Caveman code works
   #("leptonCharge[goodLeptons][0] * leptonCharge[goodLeptons][1] > 0", "SameSignCut"),
   ("nJets >= 2", "JetCut"),
-  ("mll >= 60", "MllCut"),
-  ("mjj >= 500", "MjjCut"),
+  ("ROOT::VecOps::Min(mll) >= 60", "MllCut"),
+  ("ROOT::VecOps::Min(mjj) >= 500", "MjjCut"),
   ("dRjj > 2.5", "dRjjCut"),
   ("dRj1l1 > 0.4 && dRj2l2 > 0.4", "dRllCut"),
   ("Sum(MissingET.MET) >= 50.0", "METCut"),
@@ -372,6 +381,7 @@ histograms = [
   (("dRj1l1", "DRl1j1", 40, 0, 10.), "dRj1l1"),
   (("dRj2l2", "DRl2j2", 40, 0, 10.), "dRj2l2"),
   (("dRjj", "DRjj", 40, 0, 10.), "dRjj"),
+  (("W&Zmass", "W&Zmass", 50, 0, 3500.), "WZmass"),
 ]
 
 
