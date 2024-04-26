@@ -224,7 +224,8 @@ samples = [
  ## ("WlljjQCD2jnomatch", "Samples/PROC_100TeV_Wlljj_QCD_2j_nomatch/*root", "Delphes"),
 #("ssWWSM","Samples/ssWW_SM/events.root","Delphes"),
 ("WZQuad","Samples/sigWZ/WZquad/T2/events_WZquad.root","Delphes"),
-
+("SM_WZew","Samples/bkgWZ/SM_WZew/events_SMWZew.root","Delphes"),
+("SM_WZqcd","Samples/bkgWZ/SM_WZqcd/events_SMWZqcd.root","Delphes"),
 ]
 # Units: pb
 cross_section = {
@@ -239,8 +240,9 @@ cross_section = {
   "tZq3l": 1.115,
   "WlljjEW4F": 0.4533,
   "WlljjQCD2jnomatch": 6.9,
-  "ssWWSM":1,
   "WZQuad":1,
+  "SM_WZew":1,
+  "SM_WZqcd":1,
 }
 
 # Assuming 30 ab-1
@@ -366,7 +368,7 @@ histograms = [
 #  (("njets", "nJets", 10, 0, 10), "nJets"),
 #  (("nleptons", "nLeptons", 10, 0, 10), "nLeptons"),
   (("mll", "Mll", 50, 0, 5000.), "mll"),
-  (("mjj", "Mjj", 25, 0, 10000.), "mjj"),
+  #(("mjj", "Mjj", 25, 0, 10000.), "mjj"),
   (("dPhijj", "DPhijj", 16, 0, 3.14159), "dPhijj"),
   (("dEtajj", "DEtajj", 60, 0, 15.), "dEtajj"),
   (("pTj1", "pTj1", 50, 0, 500.), "pTj1"),
