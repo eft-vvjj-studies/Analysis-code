@@ -224,8 +224,8 @@ samples = [
  ## ("WlljjQCD2jnomatch", "Samples/PROC_100TeV_Wlljj_QCD_2j_nomatch/*root", "Delphes"),
 #("ssWWSM","Samples/ssWW_SM/events.root","Delphes"),
 ("WZQuad","Samples/sigWZ/WZquad/T2/events_WZquad.root","Delphes"),
-("SM_WZew","Samples/bkgWZ/SM_WZew/events_SMWZew.root","Delphes"),
 ("SM_WZqcd","Samples/bkgWZ/SM_WZqcd/events_SMWZqcd.root","Delphes"),
+("SM_WZew","Samples/bkgWZ/SM_WZew/events_SMWZew.root","Delphes"),
 ]
 # Units: pb
 cross_section = {
@@ -241,8 +241,8 @@ cross_section = {
   "WlljjEW4F": 0.4533,
   "WlljjQCD2jnomatch": 6.9,
   "WZQuad":1,
-  "SM_WZew":1,
   "SM_WZqcd":1,
+  "SM_WZew":1,
 }
 
 # Assuming 30 ab-1
@@ -334,9 +334,9 @@ definitions = [
           " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
   ("Z4vec", "ComputeWZMass(1, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
           " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
-  ("WZmass", "ROOT::VecOps::RVec<float> (W4vec.M(),Z4vec.M())")        
-  
-
+   ("WZmass", "ROOT::VecOps::RVec<double> {W4vec.M(),Z4vec.M()}"),  
+   ("Wmass", "W4vec.M()"),
+   ("Zmass", "Z4vec.M()")
 ]
 #("dPhij1l1", "jetPhi[goodJets].size() >= 2 ? leptonPhi[goodLeptons].size() >= 2 ? jetPhi[goodJets][0] - leptonPhi[goodLeptons][0]"),
 #("dEtaj1l1", "jetEta[goodJets].size() >= 2 ? leptonEta[goodLeptons].size() >= 2 ? jetEta[goodJets][0] - leptonEta[goodLeptons][0]")
@@ -344,6 +344,7 @@ definitions = [
 #I'm pretty sure filters are applied sequentially so make sure that you don't have two mutually exclusive filters -WS
 filters = [
   ("nLeptons == 3", "LeptonCut"),
+  ("Wmass > 0 && Zmass > 0", "WZmassCut"),
   #("leptonCharge[goodLeptons][0] * leptonCharge[goodLeptons][1] > 0", "SameSignCut"),
   ("nJets >= 2", "JetCut"),
   ("ROOT::VecOps::Min(mll) >= 60", "MllCut"),
@@ -368,22 +369,26 @@ histograms = [
 #  (("njets", "nJets", 10, 0, 10), "nJets"),
 #  (("nleptons", "nLeptons", 10, 0, 10), "nLeptons"),
   (("mll", "Mll", 50, 0, 5000.), "mll"),
+  #Sadly mjj crashes for SM model inputs
   #(("mjj", "Mjj", 25, 0, 10000.), "mjj"),
+
   (("dPhijj", "DPhijj", 16, 0, 3.14159), "dPhijj"),
-  (("dEtajj", "DEtajj", 60, 0, 15.), "dEtajj"),
-  (("pTj1", "pTj1", 50, 0, 500.), "pTj1"),
-  (("pTj2", "pTj2", 50, 0, 500.), "pTj2"),
-  (("pTl1", "pTl1", 50, 0, 500.), "pTl1"),
-  (("pTl2", "pTl2", 50, 0, 500.), "pTl2"),
-  (("etal1", "etal1", 60, -6.0, 6.0), "etal1"),
-  (("etal2", "etal2", 60, -6.0, 6.0), "etal2"),
+  #(("dEtajj", "DEtajj", 60, 0, 15.), "dEtajj"),
+  #(("pTj1", "pTj1", 50, 0, 500.), "pTj1"),
+  #(("pTj2", "pTj2", 50, 0, 500.), "pTj2"),
+  #(("pTl1", "pTl1", 50, 0, 500.), "pTl1"),
+  #(("pTl2", "pTl2", 50, 0, 500.), "pTl2"),
+  #(("etal1", "etal1", 60, -6.0, 6.0), "etal1"),
+  #(("etal2", "etal2", 60, -6.0, 6.0), "etal2"),
   (("met", "met", 100, 0.0, 1000.0), "met"),
-  (("dPhijj_vs_mll", "dPhijj_vs_mll", 16, 0, 3.14159, 20, 0, 1000), "dPhijj", "mll"),
-  (("ptrel", "PtRel", 20, 0, 1.), "ptrel"),
-  (("dRj1l1", "DRl1j1", 40, 0, 10.), "dRj1l1"),
-  (("dRj2l2", "DRl2j2", 40, 0, 10.), "dRj2l2"),
-  (("dRjj", "DRjj", 40, 0, 10.), "dRjj"),
-  (("W&Zmass", "W&Zmass", 50, 0, 3500.), "WZmass"),
+  #(("dPhijj_vs_mll", "dPhijj_vs_mll", 16, 0, 3.14159, 20, 0, 1000), "dPhijj", "mll"),
+  #(("ptrel", "PtRel", 20, 0, 1.), "ptrel"),
+  #(("dRj1l1", "DRl1j1", 40, 0, 10.), "dRj1l1"),
+  #(("dRj2l2", "DRl2j2", 40, 0, 10.), "dRj2l2"),
+  #(("dRjj", "DRjj", 40, 0, 10.), "dRjj"),
+  (("Wmass", "Wmass", 50, 0, 3500.), "Wmass"),
+  (("Zmass", "Zmass", 50, 0, 3500.), "Zmass"),
+  (("W&Zmass", "W&Zmass", 50, 0, 3500.), "WZmass")
 ]
 
 
