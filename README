@@ -1,8 +1,15 @@
 #How To Run
+
+ana.py
 - Make sure the appropriate Delphes files are referenced in the samples in the list with Touples called "samples". (Currently the Code is set up to use a file called Samples with Siddharth's shared files inside)
 - You can then change the filters, histograms, and regions. By adjusting the python list with toupes with correpsonding names 
 - The python code at the end of the file will then go through each sample listed returning a multiple histograms for each filter.
-- Then Run the code, and all the outputs will be spit out in the outputs.root file.
+- Then Run the code, and all the outputs will be spit out in the output.root file.
+
+HistoMacro.c 
+(Just for nice looking pdf versions of the Histograms from the output.root)
+- use "root -q HistoMacro.c"
+- you can edit some options in the Macro file to output nicer histograms
 
 #Extra Notes 
 - Only the Z and W 4 vectors is returned in the WZMass function, for different W and Z having different flavor leptons. 

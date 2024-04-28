@@ -224,8 +224,8 @@ samples = [
  ## ("WlljjQCD2jnomatch", "Samples/PROC_100TeV_Wlljj_QCD_2j_nomatch/*root", "Delphes"),
 #("ssWWSM","Samples/ssWW_SM/events.root","Delphes"),
 ("WZQuad","Samples/sigWZ/WZquad/T2/events_WZquad.root","Delphes"),
-("SM_WZqcd","Samples/bkgWZ/SM_WZqcd/events_SMWZqcd.root","Delphes"),
-("SM_WZew","Samples/bkgWZ/SM_WZew/events_SMWZew.root","Delphes"),
+("SMWZqcd","Samples/bkgWZ/SM_WZqcd/events_SMWZqcd.root","Delphes"),
+("SMWZew","Samples/bkgWZ/SM_WZew/events_SMWZew.root","Delphes"),
 ]
 # Units: pb
 cross_section = {
@@ -241,8 +241,8 @@ cross_section = {
   "WlljjEW4F": 0.4533,
   "WlljjQCD2jnomatch": 6.9,
   "WZQuad":1,
-  "SM_WZqcd":1,
-  "SM_WZew":1,
+  "SMWZqcd":1,
+  "SMWZew":1,
 }
 
 # Assuming 30 ab-1
@@ -386,9 +386,9 @@ histograms = [
   #(("dRj1l1", "DRl1j1", 40, 0, 10.), "dRj1l1"),
   #(("dRj2l2", "DRl2j2", 40, 0, 10.), "dRj2l2"),
   #(("dRjj", "DRjj", 40, 0, 10.), "dRjj"),
-  (("Wmass", "Wmass", 50, 0, 3500.), "Wmass"),
-  (("Zmass", "Zmass", 50, 0, 3500.), "Zmass"),
-  (("W&Zmass", "W&Zmass", 50, 0, 3500.), "WZmass")
+  (("Wmass", "Wmass", 100, 0, 1500.), "Wmass"),
+  (("Zmass", "Zmass", 100, 0, 1500.), "Zmass"),
+  (("W&Zmass", "W&Zmass", 100, 0, 1500.), "WZmass")
 ]
 
 
