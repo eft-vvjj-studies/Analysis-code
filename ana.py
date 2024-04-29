@@ -154,6 +154,7 @@ ROOT::VecOps::RVec<float> L_eta, ROOT::VecOps::RVec<float> L_phi, ROOT::VecOps::
   int result_type = pow(2,type);
   if(nleptons == 3){
     // Same flavor leptons
+    // More needed currently retruns zero vector
     if(abs(nelectrons - nmuons) == 3){
       TLorentzVector v1;
       return v1;
@@ -334,7 +335,7 @@ definitions = [
           " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
   ("Z4vec", "ComputeWZMass(1, nLeptons,Sum(goodElectrons), Sum(goodMuons),leptonPt[goodLeptons], leptonEta[goodLeptons],"
           " leptonPhi[goodLeptons], leptonMass[goodLeptons], MissingET.MET[0], MissingET.Phi[0])"),
-   ("WZmass", "ROOT::VecOps::RVec<double> {W4vec.M(),Z4vec.M()}"),  
+   ("WZmass", "(W4vec + Z4vec).M()"),  
    ("Wmass", "W4vec.M()"),
    ("Zmass", "Z4vec.M()")
 ]
@@ -388,7 +389,8 @@ histograms = [
   #(("dRjj", "DRjj", 40, 0, 10.), "dRjj"),
   (("Wmass", "Wmass", 100, 0, 1500.), "Wmass"),
   (("Zmass", "Zmass", 100, 0, 1500.), "Zmass"),
-  (("W&Zmass", "W&Zmass", 100, 0, 1500.), "WZmass")
+  (("ZmassZoomin", "ZmassZoomin", 100, 0, 500.), "Zmass"),
+  (("WZmass", "WZmass", 100, 0, 5000.), "WZmass")
 ]
 
 
