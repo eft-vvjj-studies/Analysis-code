@@ -13,6 +13,11 @@ void HistoMacro(){
    TH1F *h2Z = (TH1F*)f->Get("Zmass_MllCut_SMWZqcd_all;1");
    TH1F *h3Z = (TH1F*)f->Get("Zmass_MllCut_SMWZew_all;1");
 
+   TH1F *h1Zzoom = (TH1F*)f->Get("ZmassZoomin_MllCut_WZQuad_all;1");
+   TH1F *h2Zzoom = (TH1F*)f->Get("ZmassZoomin_MllCut_SMWZqcd_all;1");
+   TH1F *h3Zzoom = (TH1F*)f->Get("ZmassZoomin_MllCut_SMWZew_all;1");
+
+
    TH1F *h1W = (TH1F*)f->Get("Wmass_MllCut_WZQuad_all;1");
    TH1F *h2W = (TH1F*)f->Get("Wmass_MllCut_SMWZqcd_all;1");
    TH1F *h3W = (TH1F*)f->Get("Wmass_MllCut_SMWZew_all;1");
@@ -125,10 +130,31 @@ void HistoMacro(){
    t->Draw("same");
    legend->Draw("");
    c->Print("Histogram.pdf");
- 
+   h1Zzoom ->SetFillStyle(1001);
+   h1Zzoom ->SetFillColorAlpha(kRed+1,0.33);
+   h1Zzoom ->GetXaxis()->SetTitle("GeV");
+   h1Zzoom ->GetYaxis()->SetTitle("");
+   h1Zzoom ->GetYaxis()->SetRangeUser(0,3.5 * pow(10,-2));
+   h1Zzoom ->GetXaxis()->SetRangeUser(0,0);
+   h1Zzoom ->SetLineWidth(2);
+   h1Zzoom ->SetLineColor(kRed+1); 
+
+   h2Zzoom ->SetFillStyle(1001);
+   h2Zzoom ->SetFillColorAlpha(kBlue+1,0.33);
+   h2Zzoom ->SetLineWidth(2);
+   h2Zzoom ->SetLineColor(kBlue+1);
+
+   h3Zzoom ->SetFillStyle(1001);
+   h3Zzoom ->SetFillColorAlpha(kGreen+1,0.33);
+   h3Zzoom ->SetLineWidth(2);
+   h3Zzoom ->SetLineColor(kGreen+1);  
+
+   h1Zzoom ->Draw("Hist");
+   h2Zzoom ->Draw("Hist" "Same");
+   h3Zzoom ->Draw("Hist" "Same");
+   c->Print("Histogram.pdf");
+
    c->Print("Histogram.pdf]"); //Closes pdf
-
-
 
 
 }

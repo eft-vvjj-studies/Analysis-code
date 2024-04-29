@@ -109,5 +109,5 @@
     "WlljjEW4F": [95, "WZ EW"],
     "tZq3l": [89, "tZQ"]
   },
-  "files" : ["/home/luka/DelphesAnalysis/ana/output.root"]
+  "files" : ["./output.root"]
 }

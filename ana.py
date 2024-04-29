@@ -389,7 +389,7 @@ histograms = [
   #(("dRjj", "DRjj", 40, 0, 10.), "dRjj"),
   (("Wmass", "Wmass", 100, 0, 1500.), "Wmass"),
   (("Zmass", "Zmass", 100, 0, 1500.), "Zmass"),
-  (("ZmassZoomin", "ZmassZoomin", 100, 0, 500.), "Zmass"),
+  (("ZmassZoomin", "ZmassZoomin", 50, 0, 200.), "Zmass"),
   (("WZmass", "WZmass", 100, 0, 5000.), "WZmass")
 ]
 
