@@ -56,7 +56,7 @@ ComputeInvariantMass_code = '''
 ROOT::VecOps::RVec<double> ComputeInvariantMass(ROOT::VecOps::RVec<float> pt, ROOT::VecOps::RVec<float> eta, ROOT::VecOps::RVec<float> phi,
  ROOT::VecOps::RVec<float> m)
 {
-  if(2 > pt.size()) return ROOT::VecOps::RVec<double> (std::numeric_limits<double>::min());
+  if(2 > pt.size()) return ROOT::VecOps::RVec<double> {std::numeric_limits<double>::min()};
 
   TLorentzVector p[2];
   for(int i ; i < pt.size(); i++) p[i].SetPtEtaPhiM(pt[i], eta[i], phi[i], m[i]);
@@ -82,7 +82,7 @@ ROOT::VecOps::RVec<double> ComputeInvariantMassLeptons(
   if(2 <= l_pt.size()) {
     return ComputeInvariantMass(l_pt, l_eta, l_phi, l_m);
   } else {
-    return ROOT::VecOps::RVec<double> (std::numeric_limits<double>::min());
+    return ROOT::VecOps::RVec<double> {std::numeric_limits<double>::min()};
   }
 }
 '''
@@ -348,8 +348,8 @@ filters = [
   ("Wmass > 0 && Zmass > 0", "WZmassCut"),
   #("leptonCharge[goodLeptons][0] * leptonCharge[goodLeptons][1] > 0", "SameSignCut"),
   ("nJets >= 2", "JetCut"),
-  ("ROOT::VecOps::Min(mll) >= 60", "MllCut"),
-  ("ROOT::VecOps::Min(mjj) >= 500", "MjjCut"),
+  #("ROOT::VecOps::Min(mll) >= 60", "MllCut"),
+  ("ROOT::VecOps::Min(mjj) >= 200", "MjjCut"),
   ("dRjj > 2.5", "dRjjCut"),
   ("dRj1l1 > 0.4 && dRj2l2 > 0.4", "dRllCut"),
   ("Sum(MissingET.MET) >= 50.0", "METCut"),
@@ -357,9 +357,10 @@ filters = [
 
 # Regions: these are defined based on a certain cut level
 regions = [
-  ("METCut", ("Sum(goodElectrons)==2", "ee")),
-  ("METCut", ("Sum(goodMuons)==2", "mm")),
-  ("METCut", ("Sum(goodElectrons)==1 && Sum(goodMuons)==1", "emme")),
+  ("METCut", ("Sum(goodElectrons)==3", "eee")),
+  ("METCut", ("Sum(goodMuons)==3", "mmm")),
+  ("METCut", ("Sum(goodElectrons)==2 && Sum(goodMuons)==1", "eem")),
+  ("METCut", ("Sum(goodElectrons)==1 && Sum(goodMuons)==2", "emm")),
 ]
 
 # These are the definitions of the histograms
@@ -367,14 +368,14 @@ regions = [
 # Todo: expand to multiple dimensions
 
 histograms = [
-#  (("njets", "nJets", 10, 0, 10), "nJets"),
+  #(("njets", "nJets", 10, 0, 10), "nJets"),
 #  (("nleptons", "nLeptons", 10, 0, 10), "nLeptons"),
   (("mll", "Mll", 50, 0, 5000.), "mll"),
   #Sadly mjj crashes for SM model inputs
   #(("mjj", "Mjj", 25, 0, 10000.), "mjj"),
 
   (("dPhijj", "DPhijj", 16, 0, 3.14159), "dPhijj"),
-  #(("dEtajj", "DEtajj", 60, 0, 15.), "dEtajj"),
+  (("dEtajj", "DEtajj", 60, 0, 15.), "dEtajj"),
   #(("pTj1", "pTj1", 50, 0, 500.), "pTj1"),
   #(("pTj2", "pTj2", 50, 0, 500.), "pTj2"),
   #(("pTl1", "pTl1", 50, 0, 500.), "pTl1"),
@@ -461,14 +462,15 @@ def ana():
   
     # cols = ROOT.vector('string')(["nLeptons", "nElectrons", "nMuons"])
     # rd.Display(cols).Print()
-  
+    
     make_histos(rd, regName = "nofilter")
+  
     for f in filters:
       print(f)
       rd = rd.Filter(*f)
       rdNodes[f[1]] = rd
       make_histos(rd, regName = f[1])
-
+  
     for r in regions:
       print(r)
       rd = rdNodes[r[0]]

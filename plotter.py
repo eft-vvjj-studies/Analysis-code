@@ -153,7 +153,7 @@ def plotter():
         print("Error: No input plots found!")
         sys.exit(0)
 
-    if not os.path.isdir(output_directory):
+    if not os.path.isdir(_directory):
         os.mkdir(output_directory)
     os.chdir(output_directory)
 
