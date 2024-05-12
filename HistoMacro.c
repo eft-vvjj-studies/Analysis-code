@@ -34,8 +34,8 @@ void HistoMacro(){
    //histogram editing options :
    h1Z->SetFillStyle(1001);
    h1Z->SetFillColorAlpha(kRed+1,0.33);
-   h1Z->SetTitle("Zmass");
-   h1Z->GetXaxis()->SetTitle("Invariant Mass(GeV)");
+   h1Z->SetTitle("Z mass");
+   h1Z->GetXaxis()->SetTitle("Z Invariant Mass(GeV)");
    h1Z->GetYaxis()->SetTitle("");
    h1Z->GetYaxis()->SetRangeUser(0,5 * pow(10,-2));
    h1Z->GetXaxis()->SetRangeUser(0,0);
@@ -79,7 +79,8 @@ void HistoMacro(){
 
    h1W->SetFillStyle(1001);
    h1W->SetFillColorAlpha(kRed+1,0.33);
-   h1W->GetXaxis()->SetTitle("Invariant Mass(GeV)");
+   h1W->SetTitle("W Mass");
+   h1W->GetXaxis()->SetTitle("W Invariant Mass(GeV)");
    h1W->GetYaxis()->SetTitle("");
    h1W->GetYaxis()->SetRangeUser(0,0.02);
    h1W->GetXaxis()->SetRangeUser(0,0);
@@ -106,7 +107,8 @@ void HistoMacro(){
 
    h1WZ->SetFillStyle(1001);
    h1WZ->SetFillColorAlpha(kRed+1,0.33);
-   h1WZ->GetXaxis()->SetTitle("Invariant Mass(GeV)");
+   h1WZ->SetTitle("WZ system mass");
+   h1WZ->GetXaxis()->SetTitle("WZ system Invariant Mass(GeV)");
    h1WZ->GetYaxis()->SetTitle("");
    h1WZ->GetYaxis()->SetRangeUser(0,0.02);
    h1WZ->GetXaxis()->SetRangeUser(0,0);
@@ -132,7 +134,8 @@ void HistoMacro(){
    c->Print("Histogram.pdf");
    h1Zzoom ->SetFillStyle(1001);
    h1Zzoom ->SetFillColorAlpha(kRed+1,0.33);
-   h1Zzoom ->GetXaxis()->SetTitle("Invariant Mass(GeV)");
+   h1Zzoom ->SetTitle("Z mass (zoom in)");
+   h1Zzoom ->GetXaxis()->SetTitle("Z Invariant Mass(GeV)");
    h1Zzoom ->GetYaxis()->SetTitle("");
    h1Zzoom ->GetYaxis()->SetRangeUser(0,5 * pow(10,-2));
    h1Zzoom ->GetXaxis()->SetRangeUser(0,0);
