@@ -35,7 +35,7 @@ void HistoMacro(){
    h1Z->SetFillStyle(1001);
    h1Z->SetFillColorAlpha(kRed+1,0.33);
    h1Z->SetTitle("Z mass");
-   h1Z->GetXaxis()->SetTitle("Z Invariant Mass(GeV)");
+   h1Z->GetXaxis()->SetTitle("l+l- Invariant Mass(GeV)");
    h1Z->GetYaxis()->SetTitle("");
    h1Z->GetYaxis()->SetRangeUser(0,5 * pow(10,-2));
    h1Z->GetXaxis()->SetRangeUser(0,0);
@@ -135,7 +135,7 @@ void HistoMacro(){
    h1Zzoom ->SetFillStyle(1001);
    h1Zzoom ->SetFillColorAlpha(kRed+1,0.33);
    h1Zzoom ->SetTitle("Z mass (zoom in)");
-   h1Zzoom ->GetXaxis()->SetTitle("Z Invariant Mass(GeV)");
+   h1Zzoom ->GetXaxis()->SetTitle("l+l-  Invariant Mass(GeV)");
    h1Zzoom ->GetYaxis()->SetTitle("");
    h1Zzoom ->GetYaxis()->SetRangeUser(0,5 * pow(10,-2));
    h1Zzoom ->GetXaxis()->SetRangeUser(0,0);
