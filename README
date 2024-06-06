@@ -2,6 +2,7 @@
 
 ana.py
 - Make sure the appropriate Delphes files are referenced in the samples in the list with Touples called "samples". (Currently the Code is set up to use a file called Samples with Siddharth's shared files inside)
+- You will also need to add a cross section value for your new sample added.
 - You can then change the filters, histograms, and regions. By adjusting the python list with toupes with correpsonding names 
 - The python code at the end of the file will then go through each sample listed returning a multiple histograms for each filter.
 - Then Run the code, and all the outputs will be spit out in the output.root file.
